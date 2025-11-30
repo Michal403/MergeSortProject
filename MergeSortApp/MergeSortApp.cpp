@@ -8,6 +8,7 @@
 #include "MergeSort.h"
 
 int main() {
+    std::cout << "=== Projekt MergeSort - Michal ===" << std::endl;
     // Zadanie: Dwie instancje tablic (int oraz double)
     std::vector<int> tablicaInt = { 12, 7, 14, 9, 10, 11 };
     std::vector<double> tablicaDouble = { 1.1, 9.9, 5.5, 2.2, 3.3 };
