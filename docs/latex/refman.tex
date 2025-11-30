@@ -1,0 +1,530 @@
+  % Handle batch mode
+  % to overcome problems with too many open files
+  \let\mypdfximage\pdfximage\def\pdfximage{\immediate\mypdfximage}
+  \RequirePackage{iftex}
+  \ifLuaTeX
+    \directlua{pdf.setminorversion(7)}
+  \fi
+  \ifXeTeX
+    \special{pdf:minorversion 7}
+  \fi
+  \ifPDFTeX
+    \pdfminorversion=7
+  \fi
+  % Set document class depending on configuration
+  \documentclass[twoside]{book}
+  % Packages required by doxygen
+  \makeatletter
+  \providecommand\IfFormatAtLeastTF{\@ifl@t@r\fmtversion}
+  % suppress package identification of infwarerr as it contains the word "warning"
+  \let\@@protected@wlog\protected@wlog
+  \def\protected@wlog#1{\wlog{package info suppressed}}
+  \RequirePackage{infwarerr}
+  \let\protected@wlog\@@protected@wlog
+  \makeatother
+  \IfFormatAtLeastTF{2016/01/01}{}{\usepackage{fixltx2e}} % for \textsubscript
+  \ifPDFTeX
+    \IfFormatAtLeastTF{2015/01/01}{\pdfsuppresswarningpagegroup=1}{}
+  \fi
+  \usepackage{doxygen}
+  \usepackage{graphicx}
+  \iftutex
+    \usepackage{fontspec}
+    \defaultfontfeatures{Ligatures={TeX}}
+    \usepackage{unicode-math}
+  \else
+    \usepackage[utf8]{inputenc}
+  \fi
+  \usepackage{makeidx}
+  \PassOptionsToPackage{warn}{textcomp}
+  \usepackage{textcomp}
+  \usepackage[nointegrals]{wasysym}
+  \usepackage{ifxetex}
+  % NLS support packages
+  \usepackage[polish]{babel}
+\let\lll\undefined
+  % Define default fonts
+  % Font selection
+  \iftutex
+  \else
+    \usepackage[T1]{fontenc}
+  \fi
+  % set main and monospaced font
+  \usepackage[scaled=.90]{helvet}
+\usepackage{courier}
+\renewcommand{\familydefault}{\sfdefault}
+  \doxyallsectionsfont{%
+    \fontseries{bc}\selectfont%
+    \color{darkgray}%
+  }
+  \renewcommand{\DoxyLabelFont}{%
+    \fontseries{bc}\selectfont%
+    \color{darkgray}%
+  }
+  \newcommand{\+}{\discretionary{\mbox{\scriptsize$\hookleftarrow$}}{}{}}
+   % Arguments of doxygenemoji:
+   % 1) ':<text>:' form of the emoji, already LaTeX-escaped
+   % 2) file with the name of the emoji without the .png extension
+   % in case image exist use this otherwise use the ':<text>:' form
+   \newcommand{\doxygenemoji}[2]{%
+     \IfFileExists{./#2.png}{\raisebox{-0.1em}{\includegraphics[height=0.9em]{./#2.png}}}{#1}%
+   }
+  % Page & text layout
+  \usepackage{geometry}
+  \geometry{%
+    a4paper,%
+    top=2.5cm,%
+    bottom=2.5cm,%
+    left=2.5cm,%
+    right=2.5cm%
+  }
+  \usepackage{changepage}
+  % Allow a bit of overflow to go unnoticed by other means
+  \tolerance=750
+  \hfuzz=15pt
+  \hbadness=750
+  \setlength{\emergencystretch}{15pt}
+  \setlength{\parindent}{0cm}
+  \newcommand{\doxynormalparskip}{\setlength{\parskip}{3ex plus 2ex minus 2ex}}
+  \newcommand{\doxytocparskip}{\setlength{\parskip}{1ex plus 0ex minus 0ex}}
+  \doxynormalparskip
+  % Redefine paragraph/subparagraph environments, using sectsty fonts
+  \makeatletter
+  \renewcommand{\paragraph}{%
+    \@startsection{paragraph}{4}{0ex}{-1.0ex}{1.0ex}{%
+      \normalfont\normalsize\bfseries\SS@parafont%
+    }%
+  }
+  \renewcommand{\subparagraph}{%
+    \@startsection{subparagraph}{5}{0ex}{-1.0ex}{1.0ex}{%
+      \normalfont\normalsize\bfseries\SS@subparafont%
+    }%
+  }
+  \makeatother
+  \makeatletter
+  \newcommand\hrulefilll{\leavevmode\leaders\hrule\hskip 0pt plus 1filll\kern\z@}
+  \makeatother
+  % Headers & footers
+  \usepackage{fancyhdr}
+  \pagestyle{fancyplain}
+  \renewcommand{\footrulewidth}{0.4pt}
+  \fancypagestyle{fancyplain}{
+    \fancyhf{}
+    \fancyhead[LE, RO]{\bfseries\thepage}
+    \fancyhead[LO]{\bfseries\rightmark}
+    \fancyhead[RE]{\bfseries\leftmark}
+    \fancyfoot[LO, RE]{\bfseries\scriptsize Wygenerowano za pomocą Doxygen }
+  }
+  \fancypagestyle{plain}{
+    \fancyhf{}
+    \fancyfoot[LO, RE]{\bfseries\scriptsize Wygenerowano za pomocą Doxygen }
+    \renewcommand{\headrulewidth}{0pt}
+  }
+  \pagestyle{fancyplain}
+  \renewcommand{\chaptermark}[1]{%
+    \markboth{#1}{}%
+  }
+  \renewcommand{\sectionmark}[1]{%
+    \markright{\thesection\ #1}%
+  }
+  % ToC, LoF, LoT, bibliography, and index
+  % Indices & bibliography
+  \usepackage[numbers]{natbib}
+  \usepackage[titles]{tocloft}
+  \setcounter{tocdepth}{3}
+  \setcounter{secnumdepth}{5}
+  % creating indexes
+  \makeindex
+  \ifPDFTeX
+\usepackage{newunicodechar}
+  \makeatletter
+    \def\doxynewunicodechar#1#2{%
+    \@tempswafalse
+    \edef\nuc@tempa{\detokenize{#1}}%
+    \if\relax\nuc@tempa\relax
+      \nuc@emptyargerr
+    \else
+      \edef\@tempb{\expandafter\@car\nuc@tempa\@nil}%
+      \nuc@check
+      \if@tempswa
+        \@namedef{u8:\nuc@tempa}{#2}%
+      \fi
+    \fi
+  }
+  \makeatother
+  \doxynewunicodechar{⁻}{${}^{-}$}% Superscript minus
+  \doxynewunicodechar{²}{${}^{2}$}% Superscript two
+  \doxynewunicodechar{³}{${}^{3}$}% Superscript three
+\fi
+  % Hyperlinks
+    % Hyperlinks (required, but should be loaded last)
+    \ifPDFTeX
+      \usepackage[pdftex,pagebackref=true]{hyperref}
+    \else
+      \ifXeTeX
+        \usepackage[xetex,pagebackref=true]{hyperref}
+      \else
+        \ifLuaTeX
+          \usepackage[luatex,pagebackref=true]{hyperref}
+        \else
+          \usepackage[ps2pdf,pagebackref=true]{hyperref}
+        \fi
+      \fi
+    \fi
+    \hypersetup{%
+      colorlinks=true,%
+      linkcolor=blue,%
+      citecolor=blue,%
+      unicode,%
+      pdftitle={Merge\+Sort\+Project},%
+      pdfsubject={}%
+    }
+  % Custom commands used by the header
+  % Custom commands
+  \newcommand{\clearemptydoublepage}{%
+    \newpage{\pagestyle{empty}\cleardoublepage}%
+  }
+  % caption style definition
+  \usepackage{caption}
+  \captionsetup{labelsep=space,justification=centering,font={bf},singlelinecheck=off,skip=4pt,position=top}
+  % in page table of contents
+  \IfFormatAtLeastTF{2023/05/01}{\usepackage[deeplevels]{etoc}}{\usepackage[deeplevels]{etoc_doxygen}}
+  \etocsettocstyle{\doxytocparskip}{\doxynormalparskip}
+  \etocsetlevel{subsubsubsection}{4}
+  \etocsetlevel{subsubsubsubsection}{5}
+  \etocsetlevel{subsubsubsubsubsection}{6}
+  \etocsetlevel{subsubsubsubsubsubsection}{7}
+  \etocsetlevel{paragraph}{8}
+  \etocsetlevel{subparagraph}{9}
+  % prevent numbers overlap the titles in toc
+  \renewcommand{\numberline}[1]{#1~}
+% End of preamble, now comes the document contents
+%===== C O N T E N T S =====
+\begin{document}
+  \raggedbottom
+  % Titlepage & ToC
+    % To avoid duplicate page anchors due to reuse of same numbers for
+    % the index (be it as roman numbers)
+    \hypersetup{pageanchor=false,
+                bookmarksnumbered=true,
+                pdfencoding=unicode
+               }
+  \pagenumbering{alph}
+  \begin{titlepage}
+  \vspace*{7cm}
+  \begin{center}%
+  {\Large Merge\+Sort\+Project}\\
+  \vspace*{1cm}
+  {\large Wygenerowano za pomocą Doxygen 1.15.0}\\
+  \end{center}
+  \end{titlepage}
+  \clearemptydoublepage
+  \pagenumbering{roman}
+  \tableofcontents
+  \clearemptydoublepage
+  \pagenumbering{arabic}
+  % re-enable anchors again
+  \hypersetup{pageanchor=true}
+%--- Begin generated contents ---
+\chapter{Struktura katalogów}
+\input{dirs}
+\chapter{Indeks przestrzeni nazw}
+\input{namespaces}
+\chapter{Indeks hierarchiczny}
+\input{hierarchy}
+\chapter{Indeks klas}
+\input{annotated}
+\chapter{Indeks plików}
+\input{files}
+\chapter{Dokumentacja katalogów}
+\input{dir_79bb6756f174c1f8e58543a6a212bb9e}
+\input{dir_6d35a49cb7cfffeb7c83c468df733514}
+\input{dir_845492cd29d00fe9d4a4e2ec7302e45d}
+\input{dir_8df4ecdb33c91fe384ace02222490f9d}
+\input{dir_e2b1ee36e3fd59dc0abc76886d909b29}
+\input{dir_abefd797735ab1b48672fac701d34882}
+\input{dir_c40a460a70b4af4c7c919d31426cb2ea}
+\input{dir_4c46b14ba8032707ef42317c116e4b94}
+\input{dir_93501a11e921083efbd154e0cdff5f10}
+\chapter{Dokumentacja przestrzeni nazw}
+\input{namespaceproto2}
+\input{namespacestd}
+\input{namespacestd_1_1tr1}
+\input{namespacestd_1_1tr1_1_1gtest__internal}
+\input{namespacetesting}
+\input{namespacetesting_1_1internal}
+\input{namespacetesting_1_1internal2}
+\input{namespacetesting_1_1internal_1_1edit__distance}
+\input{namespacetesting_1_1internal_1_1posix}
+\input{namespacetesting__internal}
+\chapter{Dokumentacja klas}
+\input{structstd_1_1tr1_1_1gtest__internal_1_1_add_ref}
+\input{structstd_1_1tr1_1_1gtest__internal_1_1_add_ref_3_01_t_01_6_01_4}
+\input{structtesting_1_1internal_1_1_add_reference}
+\input{structtesting_1_1internal_1_1_add_reference_3_01_t_01_6_01_4}
+\input{classtesting_1_1internal_1_1_assert_helper}
+\input{structtesting_1_1internal_1_1bool__constant}
+\input{structstd_1_1tr1_1_1gtest__internal_1_1_by_ref}
+\input{structstd_1_1tr1_1_1gtest__internal_1_1_by_ref_3_01_t_01_6_01_4}
+\input{structtesting_1_1internal_1_1_code_location}
+\input{structtesting_1_1internal_1_1_compile_assert}
+\input{structtesting_1_1internal_1_1_compile_assert_types_equal}
+\input{structtesting_1_1internal_1_1_compile_assert_types_equal_3_01_t_00_01_t_01_4}
+\input{structtesting_1_1internal_1_1_const_char_ptr}
+\input{structtesting_1_1internal_1_1_const_ref}
+\input{structtesting_1_1internal_1_1_const_ref_3_01_t_01_6_01_4}
+\input{classtesting_1_1_empty_test_event_listener}
+\input{structtesting_1_1internal_1_1_enable_if}
+\input{structtesting_1_1internal_1_1_enable_if_3_01true_01_4}
+\input{classtesting_1_1_environment}
+\input{classtesting_1_1internal_1_1_eq_helper}
+\input{classtesting_1_1internal_1_1_eq_helper_3_01true_01_4}
+\input{classtesting_1_1internal_1_1_floating_point}
+\input{classtesting_1_1internal_1_1_format_for_comparison}
+\input{classtesting_1_1internal_1_1_format_for_comparison_3_01_to_print_0f_n_0e_00_01_other_operand_01_4}
+\input{classstd_1_1tr1_1_1gtest__internal_1_1_get}
+\input{classstd_1_1tr1_1_1gtest__internal_1_1_get_3_010_01_4}
+\input{classstd_1_1tr1_1_1gtest__internal_1_1_get_3_011_01_4}
+\input{classstd_1_1tr1_1_1gtest__internal_1_1_get_3_012_01_4}
+\input{classstd_1_1tr1_1_1gtest__internal_1_1_get_3_013_01_4}
+\input{classstd_1_1tr1_1_1gtest__internal_1_1_get_3_014_01_4}
+\input{classstd_1_1tr1_1_1gtest__internal_1_1_get_3_015_01_4}
+\input{classstd_1_1tr1_1_1gtest__internal_1_1_get_3_016_01_4}
+\input{classstd_1_1tr1_1_1gtest__internal_1_1_get_3_017_01_4}
+\input{classstd_1_1tr1_1_1gtest__internal_1_1_get_3_018_01_4}
+\input{classstd_1_1tr1_1_1gtest__internal_1_1_get_3_019_01_4}
+\input{classtesting_1_1internal_1_1_g_test_log}
+\input{classtesting_1_1internal_1_1_g_test_mutex_lock}
+\input{structtesting_1_1internal_1_1_has_value_type}
+\input{structtesting_1_1internal_1_1_has_value_type_3_01_t_00_01_void_t_3_01typename_01_t_1_1value__type_01_4_01_4}
+\input{classtesting_1_1internal_1_1_implicitly_convertible}
+\input{structtesting_1_1internal_1_1is__pointer}
+\input{structtesting_1_1internal_1_1is__pointer_3_01_t_01_5_01_4}
+\input{structtesting_1_1internal_1_1is__same}
+\input{structtesting_1_1internal_1_1is__same_3_01_t_00_01_t_01_4}
+\input{structtesting_1_1internal_1_1_is_a_protocol_message}
+\input{structtesting_1_1internal_1_1_is_hash_table}
+\input{structtesting_1_1internal_1_1_is_recursive_container}
+\input{structtesting_1_1internal_1_1_is_recursive_container_impl}
+\input{structtesting_1_1internal_1_1_is_recursive_container_impl_3_01_c_00_01false_00_01_h_v_01_4}
+\input{structtesting_1_1internal_1_1_is_recursive_container_impl_3_01_c_00_01true_00_01false_01_4}
+\input{structtesting_1_1internal_1_1_is_recursive_container_impl_3_01_c_00_01true_00_01true_01_4}
+\input{structtesting_1_1internal_1_1_is_same}
+\input{structtesting_1_1internal_1_1_is_same_3_01_t_00_01_t_01_4}
+\input{structtesting_1_1internal_1_1_iterator_traits}
+\input{structtesting_1_1internal_1_1_iterator_traits_3_01const_01_t_01_5_01_4}
+\input{structtesting_1_1internal_1_1_iterator_traits_3_01_t_01_5_01_4}
+\input{classtesting_1_1internal_1_1linked__ptr}
+\input{classtesting_1_1internal_1_1linked__ptr__internal}
+\input{class_merge_sort}
+\input{classtesting_1_1_message}
+\input{classtesting_1_1internal_1_1_mutex}
+\input{classtesting_1_1internal_1_1_native_array}
+\input{classtesting_1_1internal_1_1_parameterized_test_case_info}
+\input{classtesting_1_1internal_1_1_parameterized_test_case_info_base}
+\input{classtesting_1_1internal_1_1_parameterized_test_case_registry}
+\input{classtesting_1_1internal_1_1_parameterized_test_factory}
+\input{classtesting_1_1internal_1_1_param_generator}
+\input{classtesting_1_1internal_1_1_param_generator_interface}
+\input{classtesting_1_1internal_1_1_param_iterator}
+\input{classtesting_1_1internal_1_1_param_iterator_interface}
+\input{structtesting_1_1internal_1_1_param_name_gen_func}
+\input{structtesting_1_1_print_to_string_param_name}
+\input{classtesting_1_1internal_1_1_random}
+\input{classtesting_1_1internal_1_1_range_generator}
+\input{classtesting_1_1internal_1_1_r_e}
+\input{structtesting_1_1internal_1_1_relation_to_source_copy}
+\input{structtesting_1_1internal_1_1_relation_to_source_reference}
+\input{structtesting_1_1internal_1_1_remove_const}
+\input{structtesting_1_1internal_1_1_remove_const_3_01const_01_t_01_4}
+\input{structtesting_1_1internal_1_1_remove_const_3_01const_01_t_0f_n_0e_4}
+\input{structtesting_1_1internal_1_1_remove_reference}
+\input{structtesting_1_1internal_1_1_remove_reference_3_01_t_01_6_01_4}
+\input{structtesting_1_1internal_1_1_rvalue_ref}
+\input{structstd_1_1tr1_1_1gtest__internal_1_1_same_size_tuple_prefix_comparator}
+\input{structstd_1_1tr1_1_1gtest__internal_1_1_same_size_tuple_prefix_comparator_3_010_00_010_01_4}
+\input{structstd_1_1tr1_1_1gtest__internal_1_1_same_size_tuple_prefix_comparator_3_01k_00_01k_01_4}
+\input{classtesting_1_1internal_1_1scoped__ptr}
+\input{classtesting_1_1_scoped_trace}
+\input{structtesting_1_1internal_1_1_static_assert_type_eq_helper}
+\input{structtesting_1_1internal_1_1_static_assert_type_eq_helper_3_01_t_00_01_t_01_4}
+\input{classtesting_1_1internal_1_1_string}
+\input{classtesting_1_1_test}
+\input{classtesting_1_1_test_case}
+\input{classtesting_1_1_test_event_listener}
+\input{classtesting_1_1_test_event_listeners}
+\input{classtesting_1_1internal_1_1_test_factory_base}
+\input{classtesting_1_1internal_1_1_test_factory_impl}
+\input{classtesting_1_1_test_info}
+\input{classtesting_1_1internal_1_1_test_meta_factory}
+\input{classtesting_1_1internal_1_1_test_meta_factory_base}
+\input{structtesting_1_1_test_param_info}
+\input{classtesting_1_1_test_property}
+\input{classtesting_1_1_test_result}
+\input{classtesting_1_1_test_with_param}
+\input{classtesting_1_1internal_1_1_thread_local}
+\input{classstd_1_1tr1_1_1tuple}
+\input{classstd_1_1tr1_1_1tuple_3_4}
+\input{structstd_1_1tr1_1_1tuple__element}
+\input{structstd_1_1tr1_1_1tuple__size}
+\input{structstd_1_1tr1_1_1tuple__size_3_01_g_t_e_s_t__0___t_u_p_l_e___07_t_08_01_4}
+\input{structstd_1_1tr1_1_1tuple__size_3_01_g_t_e_s_t__10___t_u_p_l_e___07_t_08_01_4}
+\input{structstd_1_1tr1_1_1tuple__size_3_01_g_t_e_s_t__1___t_u_p_l_e___07_t_08_01_4}
+\input{structstd_1_1tr1_1_1tuple__size_3_01_g_t_e_s_t__2___t_u_p_l_e___07_t_08_01_4}
+\input{structstd_1_1tr1_1_1tuple__size_3_01_g_t_e_s_t__3___t_u_p_l_e___07_t_08_01_4}
+\input{structstd_1_1tr1_1_1tuple__size_3_01_g_t_e_s_t__4___t_u_p_l_e___07_t_08_01_4}
+\input{structstd_1_1tr1_1_1tuple__size_3_01_g_t_e_s_t__5___t_u_p_l_e___07_t_08_01_4}
+\input{structstd_1_1tr1_1_1tuple__size_3_01_g_t_e_s_t__6___t_u_p_l_e___07_t_08_01_4}
+\input{structstd_1_1tr1_1_1tuple__size_3_01_g_t_e_s_t__7___t_u_p_l_e___07_t_08_01_4}
+\input{structstd_1_1tr1_1_1tuple__size_3_01_g_t_e_s_t__8___t_u_p_l_e___07_t_08_01_4}
+\input{structstd_1_1tr1_1_1tuple__size_3_01_g_t_e_s_t__9___t_u_p_l_e___07_t_08_01_4}
+\input{structstd_1_1tr1_1_1gtest__internal_1_1_tuple_element}
+\input{structstd_1_1tr1_1_1gtest__internal_1_1_tuple_element_3_01true_00_010_00_01_g_t_e_s_t__10___t_u_p_l_e___07_t_08_01_4}
+\input{structstd_1_1tr1_1_1gtest__internal_1_1_tuple_element_3_01true_00_011_00_01_g_t_e_s_t__10___t_u_p_l_e___07_t_08_01_4}
+\input{structstd_1_1tr1_1_1gtest__internal_1_1_tuple_element_3_01true_00_012_00_01_g_t_e_s_t__10___t_u_p_l_e___07_t_08_01_4}
+\input{structstd_1_1tr1_1_1gtest__internal_1_1_tuple_element_3_01true_00_013_00_01_g_t_e_s_t__10___t_u_p_l_e___07_t_08_01_4}
+\input{structstd_1_1tr1_1_1gtest__internal_1_1_tuple_element_3_01true_00_014_00_01_g_t_e_s_t__10___t_u_p_l_e___07_t_08_01_4}
+\input{structstd_1_1tr1_1_1gtest__internal_1_1_tuple_element_3_01true_00_015_00_01_g_t_e_s_t__10___t_u_p_l_e___07_t_08_01_4}
+\input{structstd_1_1tr1_1_1gtest__internal_1_1_tuple_element_3_01true_00_016_00_01_g_t_e_s_t__10___t_u_p_l_e___07_t_08_01_4}
+\input{structstd_1_1tr1_1_1gtest__internal_1_1_tuple_element_3_01true_00_017_00_01_g_t_e_s_t__10___t_u_p_l_e___07_t_08_01_4}
+\input{structstd_1_1tr1_1_1gtest__internal_1_1_tuple_element_3_01true_00_018_00_01_g_t_e_s_t__10___t_u_p_l_e___07_t_08_01_4}
+\input{structstd_1_1tr1_1_1gtest__internal_1_1_tuple_element_3_01true_00_019_00_01_g_t_e_s_t__10___t_u_p_l_e___07_t_08_01_4}
+\input{structtesting_1_1internal_1_1_tuple_policy}
+\input{classtesting_1_1internal_1_1_type_id_helper}
+\input{classtesting_1_1internal2_1_1_type_without_formatter}
+\input{classtesting_1_1internal2_1_1_type_without_formatter_3_01_t_00_01k_convertible_to_integer_01_4}
+\input{classtesting_1_1internal2_1_1_type_without_formatter_3_01_t_00_01k_protobuf_01_4}
+\input{classtesting_1_1internal_1_1_type_with_size}
+\input{classtesting_1_1internal_1_1_type_with_size_3_014_01_4}
+\input{classtesting_1_1internal_1_1_type_with_size_3_018_01_4}
+\input{classtesting_1_1_unit_test}
+\input{classtesting_1_1internal_1_1_universal_printer}
+\input{classtesting_1_1internal_1_1_universal_printer_3_01_t_01_6_01_4}
+\input{classtesting_1_1internal_1_1_universal_printer_3_01_t_0f_n_0e_4}
+\input{classtesting_1_1internal_1_1_universal_terse_printer}
+\input{classtesting_1_1internal_1_1_universal_terse_printer_3_01char_01_5_01_4}
+\input{classtesting_1_1internal_1_1_universal_terse_printer_3_01const_01char_01_5_01_4}
+\input{classtesting_1_1internal_1_1_universal_terse_printer_3_01_t_01_6_01_4}
+\input{classtesting_1_1internal_1_1_universal_terse_printer_3_01_t_0f_n_0e_4}
+\input{classtesting_1_1internal_1_1_universal_terse_printer_3_01wchar__t_01_5_01_4}
+\input{classtesting_1_1internal_1_1_value_array1}
+\input{classtesting_1_1internal_1_1_value_array10}
+\input{classtesting_1_1internal_1_1_value_array11}
+\input{classtesting_1_1internal_1_1_value_array12}
+\input{classtesting_1_1internal_1_1_value_array13}
+\input{classtesting_1_1internal_1_1_value_array14}
+\input{classtesting_1_1internal_1_1_value_array15}
+\input{classtesting_1_1internal_1_1_value_array16}
+\input{classtesting_1_1internal_1_1_value_array17}
+\input{classtesting_1_1internal_1_1_value_array18}
+\input{classtesting_1_1internal_1_1_value_array19}
+\input{classtesting_1_1internal_1_1_value_array2}
+\input{classtesting_1_1internal_1_1_value_array20}
+\input{classtesting_1_1internal_1_1_value_array21}
+\input{classtesting_1_1internal_1_1_value_array22}
+\input{classtesting_1_1internal_1_1_value_array23}
+\input{classtesting_1_1internal_1_1_value_array24}
+\input{classtesting_1_1internal_1_1_value_array25}
+\input{classtesting_1_1internal_1_1_value_array26}
+\input{classtesting_1_1internal_1_1_value_array27}
+\input{classtesting_1_1internal_1_1_value_array28}
+\input{classtesting_1_1internal_1_1_value_array29}
+\input{classtesting_1_1internal_1_1_value_array3}
+\input{classtesting_1_1internal_1_1_value_array30}
+\input{classtesting_1_1internal_1_1_value_array31}
+\input{classtesting_1_1internal_1_1_value_array32}
+\input{classtesting_1_1internal_1_1_value_array33}
+\input{classtesting_1_1internal_1_1_value_array34}
+\input{classtesting_1_1internal_1_1_value_array35}
+\input{classtesting_1_1internal_1_1_value_array36}
+\input{classtesting_1_1internal_1_1_value_array37}
+\input{classtesting_1_1internal_1_1_value_array38}
+\input{classtesting_1_1internal_1_1_value_array39}
+\input{classtesting_1_1internal_1_1_value_array4}
+\input{classtesting_1_1internal_1_1_value_array40}
+\input{classtesting_1_1internal_1_1_value_array41}
+\input{classtesting_1_1internal_1_1_value_array42}
+\input{classtesting_1_1internal_1_1_value_array43}
+\input{classtesting_1_1internal_1_1_value_array44}
+\input{classtesting_1_1internal_1_1_value_array45}
+\input{classtesting_1_1internal_1_1_value_array46}
+\input{classtesting_1_1internal_1_1_value_array47}
+\input{classtesting_1_1internal_1_1_value_array48}
+\input{classtesting_1_1internal_1_1_value_array49}
+\input{classtesting_1_1internal_1_1_value_array5}
+\input{classtesting_1_1internal_1_1_value_array50}
+\input{classtesting_1_1internal_1_1_value_array6}
+\input{classtesting_1_1internal_1_1_value_array7}
+\input{classtesting_1_1internal_1_1_value_array8}
+\input{classtesting_1_1internal_1_1_value_array9}
+\input{classtesting_1_1internal_1_1_values_in_iterator_range_generator}
+\input{structtesting_1_1internal_1_1_void_t}
+\input{classtesting_1_1_with_param_interface}
+\input{structtesting_1_1internal_1_1_wrap_printer_type}
+\chapter{Dokumentacja plików}
+\input{_merge_sort_8h}
+\input{_merge_sort_8h_source}
+\input{_merge_sort_app_8cpp}
+\input{gtest-death-test_8h}
+\input{gtest-death-test_8h_source}
+\input{gtest-message_8h}
+\input{gtest-message_8h_source}
+\input{gtest-param-test_8h}
+\input{gtest-param-test_8h_source}
+\input{gtest-printers_8h}
+\input{gtest-printers_8h_source}
+\input{internal_2custom_2gtest-printers_8h}
+\input{internal_2custom_2gtest-printers_8h_source}
+\input{gtest-spi_8h}
+\input{gtest-spi_8h_source}
+\input{gtest-test-part_8h}
+\input{gtest-test-part_8h_source}
+\input{gtest-typed-test_8h}
+\input{gtest-typed-test_8h_source}
+\input{gtest_8h}
+\input{gtest_8h_source}
+\input{internal_2custom_2gtest_8h}
+\input{internal_2custom_2gtest_8h_source}
+\input{gtest__pred__impl_8h}
+\input{gtest__pred__impl_8h_source}
+\input{gtest__prod_8h}
+\input{gtest__prod_8h_source}
+\input{custom_2gtest-port_8h}
+\input{custom_2gtest-port_8h_source}
+\input{gtest-port_8h}
+\input{gtest-port_8h_source}
+\input{_r_e_a_d_m_e_8md}
+\input{gtest-death-test-internal_8h}
+\input{gtest-death-test-internal_8h_source}
+\input{gtest-filepath_8h}
+\input{gtest-filepath_8h_source}
+\input{gtest-internal_8h}
+\input{gtest-internal_8h_source}
+\input{gtest-linked__ptr_8h}
+\input{gtest-linked__ptr_8h_source}
+\input{gtest-param-util-generated_8h}
+\input{gtest-param-util-generated_8h_source}
+\input{gtest-param-util_8h}
+\input{gtest-param-util_8h_source}
+\input{gtest-port-arch_8h}
+\input{gtest-port-arch_8h_source}
+\input{gtest-string_8h}
+\input{gtest-string_8h_source}
+\input{gtest-tuple_8h}
+\input{gtest-tuple_8h_source}
+\input{gtest-type-util_8h}
+\input{gtest-type-util_8h_source}
+\input{pch_8cpp}
+\input{pch_8h}
+\input{pch_8h_source}
+\input{test_8cpp}
+%--- End generated contents ---
+% Index
+  \backmatter
+  \newpage
+  \phantomsection
+  \clearemptydoublepage
+  \addcontentsline{toc}{chapter}{\indexname}
+  \printindex
+% Required for some languages (in combination with latexdocumentpre from the header)
+\end{document}

@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pl">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.15.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>MergeSortProject: Dokumentacja katalogu packages/Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.8/build/native/include/gtest/internal/custom</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">MergeSortProject
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Wygenerowano za pomocą Doxygen 1.15.0 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+$(function() { codefold.init(); });
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Szukaj',true);
+  $(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){initNavTree('dir_6d35a49cb7cfffeb7c83c468df733514.html','',''); });
+</script>
+<div id="container">
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Wczytywanie...</div>
+<div class="SRStatus" id="Searching">Szukanie...</div>
+<div class="SRStatus" id="NoMatches">Brak dopasowań</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">Dokumentacja katalogu custom</div></div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-files" class="groupheader"><a id="files" name="files"></a>
+Pliki</h2></td></tr>
+<tr class="memitem:gtest-port_2Eh" id="r_gtest-port_2Eh"><td class="memItemLeft" align="right" valign="top"><a href="custom_2gtest-port_8h_source.html"><span class="icondoc"><div class="doc-icon"></div></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="custom_2gtest-port_8h.html">gtest-port.h</a></td></tr>
+<tr class="memitem:gtest-printers_2Eh" id="r_gtest-printers_2Eh"><td class="memItemLeft" align="right" valign="top"><a href="internal_2custom_2gtest-printers_8h_source.html"><span class="icondoc"><div class="doc-icon"></div></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="internal_2custom_2gtest-printers_8h.html">gtest-printers.h</a></td></tr>
+<tr class="memitem:gtest_2Eh" id="r_gtest_2Eh"><td class="memItemLeft" align="right" valign="top"><a href="internal_2custom_2gtest_8h_source.html"><span class="icondoc"><div class="doc-icon"></div></span></a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="internal_2custom_2gtest_8h.html">gtest.h</a></td></tr>
+</table>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Opis szczegółowy</h2>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md0"></a>
+Customization Points</h1>
+<p>The custom directory is an injection point for custom user configurations.</p>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md1"></a>
+Header <span class="tt">gtest.h</span></h1>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md2"></a>
+The following macros can be defined:</h2>
+<ul>
+<li><span class="tt">GTEST_OS_STACK_TRACE_GETTER_</span> - The name of an implementation of <span class="tt">OsStackTraceGetterInterface</span>.</li>
+<li><span class="tt">GTEST_CUSTOM_TEMPDIR_FUNCTION_</span> - An override for <span class="tt"><a class="el" href="namespacetesting.html#abcf5181cecc3c07915dceb3de46ab07f">testing::TempDir()</a></span>. See <span class="tt"><a class="el" href="namespacetesting.html#abcf5181cecc3c07915dceb3de46ab07f">testing::TempDir</a></span> for semantics and signature.</li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md3"></a>
+Header <span class="tt">gtest-port.h</span></h1>
+<p>The following macros can be defined:</p>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md4"></a>
+Flag related macros:</h2>
+<ul>
+<li><span class="tt"><a class="el" href="gtest-port_8h.html#a828f4e34a1c4b510da50ec1563e3562a">GTEST_FLAG(flag_name)</a></span></li>
+<li><span class="tt"><a class="el" href="gtest-port_8h.html#aa2315948dda8dba4fc516575657f193c">GTEST_USE_OWN_FLAGFILE_FLAG_</a></span> - Define to 0 when the system provides its own flagfile flag parsing.</li>
+<li><span class="tt"><a class="el" href="gtest-port_8h.html#a14eb0e9c6e0df765d1fbfd2db6966d14">GTEST_DECLARE_bool_(name)</a></span></li>
+<li><span class="tt"><a class="el" href="gtest-port_8h.html#aab2ee98cb616054b1d3a7dc71efe81fc">GTEST_DECLARE_int32_(name)</a></span></li>
+<li><span class="tt"><a class="el" href="gtest-port_8h.html#a9f74eee05f7ee5534139a622fe7da7dd">GTEST_DECLARE_string_(name)</a></span></li>
+<li><span class="tt"><a class="el" href="gtest-port_8h.html#a48e05814779e5a2f432b06a12618a760">GTEST_DEFINE_bool_(name, default_val, doc)</a></span></li>
+<li><span class="tt"><a class="el" href="gtest-port_8h.html#a88ee2f19589ffff86ca742fd33611358">GTEST_DEFINE_int32_(name, default_val, doc)</a></span></li>
+<li><span class="tt"><a class="el" href="gtest-port_8h.html#a885e18fe217a6e85553d408b99252c12">GTEST_DEFINE_string_(name, default_val, doc)</a></span></li>
+</ul>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md5"></a>
+Logging:</h2>
+<ul>
+<li><span class="tt"><a class="el" href="gtest-port_8h.html#a8ef4cb4c465db8c15464aecc6d9510ef">GTEST_LOG_(severity)</a></span></li>
+<li><span class="tt"><a class="el" href="gtest-port_8h.html#ab54343f0a36dc4cb0ce8a478dd7847b8">GTEST_CHECK_(condition)</a></span></li>
+<li>Functions <span class="tt">LogToStderr()</span> and <span class="tt">FlushInfoLog()</span> have to be provided too.</li>
+</ul>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md6"></a>
+Threading:</h2>
+<ul>
+<li><span class="tt">GTEST_HAS_NOTIFICATION_</span> - Enabled if Notification is already provided.</li>
+<li><span class="tt">GTEST_HAS_MUTEX_AND_THREAD_LOCAL_</span> - Enabled if <span class="tt">Mutex</span> and <span class="tt">ThreadLocal</span> are already provided. Must also provide <span class="tt"><a class="el" href="gtest-port_8h.html#af0970cdea09f16dbb1dbfccdaa693eeb">GTEST_DECLARE_STATIC_MUTEX_(mutex)</a></span> and <span class="tt"><a class="el" href="gtest-port_8h.html#a85d5cd679fdbe87383e7dfd1c6651eaa">GTEST_DEFINE_STATIC_MUTEX_(mutex)</a></span></li>
+<li><span class="tt"><a class="el" href="gtest-port_8h.html#a149f693bd59fa1bc937af54c0cdcb32f">GTEST_EXCLUSIVE_LOCK_REQUIRED_(locks)</a></span></li>
+<li><span class="tt"><a class="el" href="gtest-port_8h.html#a69abff5a4efdd07bd5faebe3dd318d06">GTEST_LOCK_EXCLUDED_(locks)</a></span></li>
+</ul>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md7"></a>
+Underlying library support features</h2>
+<ul>
+<li><span class="tt"><a class="el" href="gtest-port_8h.html#ae6239a8ccf4c230008d1db1ea8bd738e">GTEST_HAS_CXXABI_H_</a></span></li>
+</ul>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md8"></a>
+Exporting API symbols:</h2>
+<ul>
+<li><span class="tt"><a class="el" href="gtest-port_8h.html#aa73be6f0ba4a7456180a94904ce17790">GTEST_API_</a></span> - Specifier for exported symbols.</li>
+</ul>
+<h1 class="doxsection"><a class="anchor" id="autotoc_md9"></a>
+Header <span class="tt">gtest-printers.h</span></h1>
+<ul>
+<li>See documentation at <span class="tt"><a class="el" href="gtest-printers_8h.html">gtest/gtest-printers.h</a></span> for details on how to define a custom printer. </li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<div id="page-nav" class="page-nav-panel">
+<div id="page-nav-resize-handle"></div>
+<div id="page-nav-tree">
+<div id="page-nav-contents">
+</div><!-- page-nav-contents -->
+</div><!-- page-nav-tree -->
+</div><!-- page-nav -->
+</div><!-- container -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="dir_93501a11e921083efbd154e0cdff5f10.html">packages</a></li><li class="navelem"><a href="dir_c40a460a70b4af4c7c919d31426cb2ea.html">Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.1.8</a></li><li class="navelem"><a href="dir_79bb6756f174c1f8e58543a6a212bb9e.html">build</a></li><li class="navelem"><a href="dir_4c46b14ba8032707ef42317c116e4b94.html">native</a></li><li class="navelem"><a href="dir_8df4ecdb33c91fe384ace02222490f9d.html">include</a></li><li class="navelem"><a href="dir_845492cd29d00fe9d4a4e2ec7302e45d.html">gtest</a></li><li class="navelem"><a href="dir_e2b1ee36e3fd59dc0abc76886d909b29.html">internal</a></li><li class="navelem"><a href="dir_6d35a49cb7cfffeb7c83c468df733514.html">custom</a></li>
+    <li class="footer">Wygenerowano za pomocą <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.15.0 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,4 +1,9 @@
-﻿#include <iostream>
+﻿/**
+ * @file MergeSortApp.cpp
+ * @brief Główny plik programu uruchamiający algorytm.
+ * @author Marecik Michał
+ */
+#include <iostream>
 #include <vector>
 #include "MergeSort.h"
 
