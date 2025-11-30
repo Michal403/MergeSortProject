@@ -1,3 +1,4 @@
+// Zlozonosc obliczeniowa: O(n log n)
 /**
  * @file MergeSort.h
  * @brief Implementacja algorytmu sortowania przez scalanie (Merge Sort).
