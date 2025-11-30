@@ -108,3 +108,4 @@ TEST(MergeSortTest, LargeArrayMixed) {
         EXPECT_LE(arr[i], arr[i + 1]);
     }
 }
+// Wszystkie testy zostaly zweryfikowane frameworkiem Google Test
