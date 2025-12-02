@@ -1,0 +1,135 @@
+\newpage
+\section{Implementacja} % 4
+
+Etap implementacji polegał na utworzeniu klasy szablonowej \texttt{MergeSort}, która realizuje algorytm sortowania przez scalanie, oraz przygotowaniu środowiska testowego. Cały projekt został zrealizowany w języku C++ (standard C++14) z użyciem środowiska Visual Studio.
+
+\subsection{Struktura projektu}
+
+Projekt w Visual Studio składa się z następujących kluczowych plików:
+\begin{itemize}
+    \item \texttt{MergeSort.h} – Definicja i implementacja szablonowej klasy sortującej.
+    \item \texttt{MergeSortApp.cpp} – Główny plik aplikacji demonstracyjnej (funkcja \texttt{main}).
+    \item \texttt{test.cpp} – Plik zawierający testy jednostkowe Google Test.
+\end{itemize}
+
+\subsection{Implementacja klasy \texttt{MergeSort}}
+
+Klasa \texttt{MergeSort} jest klasą statyczną, co oznacza, że nie wymaga tworzenia instancji obiektu, aby wykonać sortowanie. Wykorzystuje szablony (\texttt{templates}), aby obsługiwać dowolne typy liczbowe. Jej interfejs przedstawiono na listingu \ref{lst:mergesort-h}.
+
+\begin{lstlisting}[caption=Interfejs klasy MergeSort (MergeSort.h), label={lst:mergesort-h}, language=C++]
+template<typename T>
+class MergeSort {
+public:
+    // Metoda publiczna inicjalizujaca sortowanie
+    static void sort(std::vector<T>& arr) {
+        if (arr.size() <= 1) return;
+        mergeSort(arr, 0, static_cast<int>(arr.size()) - 1);
+    }
+
+private:
+    // Metoda rekurencyjna dzielaca tablice
+    static void mergeSort(std::vector<T>& arr, int left, int right) {
+        if (left >= right) return;
+        int mid = left + (right - left) / 2;
+        mergeSort(arr, left, mid);
+        mergeSort(arr, mid + 1, right);
+        merge(arr, left, mid, right);
+    }
+    
+    // Metoda scalajaca posortowane podzbiory
+    static void merge(std::vector<T>& arr, int left, int mid, int right);
+};
+\end{lstlisting}
+
+Kluczowym elementem jest metoda \texttt{merge}, która scala dwa posortowane podzbiory w jeden większy, zachowując kolejność rosnącą. Dzięki użyciu \texttt{std::vector}, algorytm jest bezpieczny i łatwy w użyciu.
+
+\subsection{Aplikacja demonstracyjna (Main)}
+
+W pliku \texttt{MergeSortApp.cpp} zaimplementowano funkcję \texttt{main}, która tworzy dwie instancje tablic (dla typów \texttt{int} oraz \texttt{double}), wypełnia je danymi, a następnie sortuje i wyświetla wynik. Listing \ref{lst:main} prezentuje fragment tego pliku.
+
+\begin{lstlisting}[caption=Fragment pliku MergeSortApp.cpp, label={lst:main}, language=C++]
+int main() {
+    std::cout << "=== Projekt MergeSort - Michal ===" << std::endl;
+
+    // Instancja 1: Liczby calkowite
+    std::vector<int> ints = { 12, 7, 14, 9, 10, 11 };
+    MergeSort<int>::sort(ints);
+
+    // Instancja 2: Liczby zmiennoprzecinkowe
+    std::vector<double> doubles = { 1.1, 9.9, 5.5, 2.2 };
+    MergeSort<double>::sort(doubles);
+
+    // Wyswietlanie wynikow (kod pominiety dla czytelnosci)
+    return 0;
+}
+\end{lstlisting}
+
+Wynik działania programu skompilowanego w trybie \textit{Release} przedstawiono na rysunku \ref{fig:konsola}.
+
+\begin{figure}[H]
+    \centering
+    % TODO: Wgraj plik konsola.png (screen czarnego okna z napisem "Projekt MergeSort - Michal")
+    \includegraphics[width=0.85\textwidth]{lista_dwukierunkowa/rys/konsola.png}
+    \caption{Wynik działania programu – zrzut z konsoli.}
+    \label{fig:konsola}
+\end{figure}
+
+\subsection{Testowanie i wyniki (Google Test)}
+
+Najważniejszą częścią weryfikacji były testy jednostkowe. Zaimplementowano 13 scenariuszy testowych w pliku \texttt{test.cpp}, pokrywających wymagania funkcjonalne (m.in. liczby ujemne, duplikaty, puste tablice). Fragment testów przedstawiono na listingu \ref{lst:tests}.
+
+\begin{lstlisting}[caption=Przykładowe testy jednostkowe (test.cpp), label={lst:tests}, language=C++]
+TEST(MergeSortTest, AlreadySorted) {
+    std::vector<int> arr = { 1, 2, 3, 4, 5 };
+    MergeSort<int>::sort(arr);
+    EXPECT_EQ(arr, (std::vector<int>{1, 2, 3, 4, 5}));
+}
+
+TEST(MergeSortTest, RandomOrder) {
+    std::vector<int> arr = { 10, 2, 8, 1, 5 };
+    MergeSort<int>::sort(arr);
+    EXPECT_EQ(arr, (std::vector<int>{1, 2, 5, 8, 10}));
+}
+
+TEST(MergeSortTest, OnlyNegative) {
+    std::vector<int> arr = { -5, -1, -10, -3 };
+    MergeSort<int>::sort(arr);
+    EXPECT_EQ(arr, (std::vector<int>{-10, -5, -3, -1}));
+}
+\end{lstlisting}
+
+Wszystkie testy zakończyły się wynikiem pozytywnym, co potwierdza poprawność implementacji algorytmu. Rezultat wykonania testów w oknie Eksploratora testów Visual Studio (lub konsoli) przedstawiono na rysunku \ref{fig:testy}.
+
+\begin{figure}[H]
+    \centering
+    % TODO: Wgraj plik testy.png (screen z zielonymi ptaszkami z Visual Studio)
+    \includegraphics[width=0.85\textwidth]{lista_dwukierunkowa/rys/testy.png}
+    \caption{Wynik uruchomienia testów w Eksploratorze testów Visual Studio.}
+    \label{fig:testy}
+\end{figure}
+
+\newpage
+Zbiorcze zestawienie zweryfikowanych przypadków testowych przedstawiono w tabeli \ref{tab:testy}.
+
+\begin{table}[h!]
+\centering
+\caption{Zestawienie wykonanych testów jednostkowych}
+\label{tab:testy}
+\begin{tabular}{|l|l|c|}
+\hline
+\textbf{Nazwa testu} & \textbf{Opis przypadku} & \textbf{Wynik} \\ \hline
+AlreadySorted & Tablica już posortowana & OK \\ \hline
+ReversedOrder & Tablica odwrócona & OK \\ \hline
+RandomOrder & Tablica losowa & OK \\ \hline
+OnlyNegative & Tylko liczby ujemne & OK \\ \hline
+NegativeAndPositive & Liczby mieszane & OK \\ \hline
+EmptyArray & Pusta tablica & OK \\ \hline
+SingleElement & Jeden element & OK \\ \hline
+WithDuplicates & Duplikaty & OK \\ \hline
+NegativeDuplicates & Ujemne z duplikatami & OK \\ \hline
+MixedDuplicates & Mieszane z duplikatami & OK \\ \hline
+TwoElementsSorted & Dwa elementy rosnąco & OK \\ \hline
+LargeArray & Duża tablica (>100 el.) & OK \\ \hline
+LargeArrayMixed & Duża tablica mieszana & OK \\ \hline
+\end{tabular}
+\end{table}

@@ -1,0 +1,108 @@
+\newpage
+\section{Analiza problemu} % 2
+
+Celem projektu jest implementacja algorytmu sortowania przez scalanie (\textit{Merge Sort}) w języku C++. Jest to jeden z podstawowych algorytmów sortowania, działający w oparciu o metodę "dziel i zwyciężaj" (\textit{divide and conquer}).
+
+Algorytm ten charakteryzuje się złożonością czasową rzędu $O(n \log n)$, co czyni go znacznie wydajniejszym od prostych metod sortowania (takich jak sortowanie bąbelkowe) dla dużych zbiorów danych. Kluczowym aspektem projektu jest zastosowanie \textbf{szablonów} (\textit{templates}), co pozwala na uniezależnienie implementacji od konkretnego typu danych liczbowych.
+
+\subsection{Zastosowanie algorytmu}
+
+Sortowanie przez scalanie jest szeroko wykorzystywane w informatyce ze względu na swoją stabilność oraz gwarantowaną złożoność obliczeniową. Przykładowe zastosowania to:
+\begin{itemize}
+    \item \textbf{Sortowanie dużych zbiorów danych:} Dzięki wydajności $O(n \log n)$ algorytm świetnie radzi sobie z tablicami zawierającymi miliony elementów.
+    \item \textbf{Sortowanie list jednokierunkowych:} W przeciwieństwie do Quick Sort, Merge Sort nie wymaga swobodnego dostępu do pamięci (random access), co czyni go idealnym dla struktur listowych.
+    \item \textbf{Sortowanie zewnętrzne:} Jest wykorzystywany w systemach bazodanowych do sortowania danych, które nie mieszczą się w pamięci RAM (dane są dzielone na fragmenty, sortowane i scalane z dysku).
+    \item \textbf{Zastosowania ogólne:} Biblioteki standardowe w wielu językach programowania używają wariantów Merge Sort jako domyślnego algorytmu sortowania stabilnego.
+\end{itemize}
+
+\subsection{Opis działania programu}
+
+Zaimplementowane rozwiązanie składa się z dwóch głównych modułów w środowisku Visual Studio:
+\begin{enumerate}
+    \item \textbf{Moduł Algorytmu (Aplikacja):}
+    \begin{itemize}
+        \item Klasa \texttt{MergeSort} – statyczna klasa szablonowa zawierająca metody \texttt{sort} (publiczna) oraz \texttt{mergeSort} i \texttt{merge} (prywatne, pomocnicze).
+        \item Funkcja \texttt{main} – demonstruje działanie algorytmu na wektorach typów \texttt{int} oraz \texttt{double}, wypisując wyniki na standardowe wyjście.
+    \end{itemize}
+    \item \textbf{Moduł Testowy (Google Test):}
+    \begin{itemize}
+        \item Zawiera zestaw 13 testów jednostkowych weryfikujących poprawność algorytmu w skrajnych przypadkach (np. pusta tablica, liczby ujemne, duplikaty).
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Przykład działania algorytmu}
+
+Aby zilustrować działanie metody "dziel i zwyciężaj", rozważmy sortowanie tablicy: \texttt{[38, 27, 43, 3]}.
+
+\begin{enumerate}
+    \item \textbf{Podział:} Tablica jest dzielona na dwie połowy: \texttt{[38, 27]} oraz \texttt{[43, 3]}.
+    \item \textbf{Rekurencja:} Podział trwa aż do uzyskania tablic jednoelementowych: \texttt{[38]}, \texttt{[27]}, \texttt{[43]}, \texttt{[3]}.
+    \item \textbf{Scalanie (Merge):}
+    \begin{itemize}
+        \item Scalenie \texttt{[38]} i \texttt{[27]} daje posortowane \texttt{[27, 38]}.
+        \item Scalenie \texttt{[43]} i \texttt{[3]} daje posortowane \texttt{[3, 43]}.
+    \end{itemize}
+    \item \textbf{Scalanie końcowe:} Scalenie \texttt{[27, 38]} i \texttt{[3, 43]} daje wynik końcowy: \texttt{[3, 27, 38, 43]}.
+\end{enumerate}
+
+\subsection{Opis wykorzystanych narzędzi}
+
+Projekt został zrealizowany w języku \texttt{C++} (standard C++14) w środowisku \textbf{Visual Studio 2022}. Do weryfikacji poprawności kodu wykorzystano framework \textbf{Google Test}, który jest standardem w testowaniu oprogramowania C++.
+
+Do zarządzania wersjami użyto systemu \textbf{Git}, a repozytorium zdalne umieszczono w serwisie \textbf{GitHub}. Pozwoliło to na śledzenie historii zmian i symulację pracy zespołowej.
+
+Dokumentacja techniczna została wygenerowana automatycznie przy użyciu narzędzia \textbf{Doxygen}, co pozwoliło na uzyskanie profesjonalnego opisu klas i metod w formacie PDF.
+
+\subsection{Sposób wykorzystania narzędzi (Git i GitHub)}
+
+Podczas pracy nad projektem system kontroli wersji był kluczowy dla zachowania spójności kodu. Poniżej przedstawiono realizację wymaganych scenariuszy użycia Gita.
+
+\subsubsection{Historia commitów}
+Projekt był rozwijany etapami. Po każdej istotnej zmianie (dodanie algorytmu, dodanie testów, poprawki w dokumentacji) wykonywano \textit{commit}. Rysunek \ref{fig:git-log} przedstawia historię zmian projektu.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.9\textwidth]{lista_dwukierunkowa/rys/git_log.png}
+    \caption{Historia commitów repozytorium (Git Bash).}
+    \label{fig:git-log}
+\end{figure}
+
+\subsubsection{Cofanie zmian (git reset)}
+W celu przetestowania przywracania starszej wersji kodu, użyto polecenia \texttt{git reset}. Pozwala to na wycofanie się do wybranego punktu w historii, usuwając późniejsze zmiany (w trybie hard). Rysunek \ref{fig:git-reset} przedstawia efekt tej operacji.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.9\textwidth]{lista_dwukierunkowa/rys/git_reset.png}
+    \caption{Efekt operacji \texttt{git reset} w konsoli.}
+    \label{fig:git-reset}
+\end{figure}
+
+\subsubsection{Usuwanie błędnego commita (git revert)}
+Aby bezpiecznie wycofać zmiany bez naruszania historii (np. w zespole), zastosowano polecenie \texttt{git revert}. Tworzy ono nowy commit, który jest odwrotnością commita błędnego. Rysunek \ref{fig:git-revert} przedstawia przebieg operacji.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.9\textwidth]{lista_dwukierunkowa/rys/git_revert.png}
+    \caption{Przykład cofnięcia zmian za pomocą \texttt{git revert}.}
+    \label{fig:git-revert}
+\end{figure}
+
+\subsubsection{Praca na dwóch lokalizacjach (git pull/push)}
+Projekt był synchronizowany ze zdalnym repozytorium GitHub. Zmiany wprowadzone lokalnie były wysyłane poleceniem \texttt{git push}, a ewentualne zmiany zdalne pobierane za pomocą \texttt{git pull}. Rysunek \ref{fig:git-sync} ilustruje proces synchronizacji.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.9\textwidth]{lista_dwukierunkowa/rys/git_push.png}
+    \caption{Synchronizacja zmian ze zdalnym repozytorium GitHub.}
+    \label{fig:git-sync}
+\end{figure}
+
+\subsubsection{Odzyskiwanie usuniętego pliku (git checkout)}
+Zasymulowano awarię polegającą na usunięciu pliku \texttt{README.md}. Dzięki systemowi Git, plik został natychmiast przywrócony ze stanu ostatniego commita przy użyciu polecenia \texttt{git checkout}. Rysunek \ref{fig:git-checkout} przedstawia przebieg tej operacji.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.9\textwidth]{lista_dwukierunkowa/rys/git_checkout.png}
+    \caption{Odzyskiwanie usuniętego pliku z repozytorium.}
+    \label{fig:git-checkout}
+\end{figure}

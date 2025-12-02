@@ -1,0 +1,96 @@
+\newpage
+\section{Projektowanie} % 3
+
+Etap projektowania obejmował zaplanowanie architektury aplikacji, podział na moduły oraz analizę teoretyczną algorytmu. Projekt został zrealizowany zgodnie z paradygmatem programowania obiektowego w języku C++ z wykorzystaniem środowiska Visual Studio.
+
+\subsection{Struktura rozwiązania}
+
+Rozwiązanie w Visual Studio (\textit{Solution}) zostało podzielone na dwa odrębne projekty, co zapewnia separację logiki biznesowej od testów i zwiększa czytelność kodu:
+
+\begin{enumerate}
+    \item \textbf{MergeSortApp} (Projekt główny):
+    \begin{itemize}
+        \item \texttt{MergeSort.h} – Plik nagłówkowy zawierający definicję szablonowej klasy \texttt{MergeSort} oraz pełną implementację algorytmu (ze względu na specyfikę szablonów w C++).
+        \item \texttt{MergeSortApp.cpp} – Plik źródłowy zawierający funkcję \texttt{main}, odpowiedzialny za interakcję z użytkownikiem, inicjalizację danych testowych i prezentację wyników w konsoli.
+    \end{itemize}
+    
+    \item \textbf{MergeSortProject} (Projekt testowy):
+    \begin{itemize}
+        \item \texttt{test.cpp} – Plik zawierający implementację 13 testów jednostkowych przy użyciu biblioteki Google Test.
+        \item \texttt{packages.config} – Plik konfiguracyjny menedżera pakietów NuGet, zarządzający zależnościami biblioteki \texttt{gtest}.
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Projekt klasy MergeSort}
+
+Algorytm został zenkapsulowany w klasie statycznej, co jest zgodne z zasadą \textit{Utility Class} (klasa narzędziowa). Dzięki zastosowaniu szablonów (\textit{templates}), klasa jest uniwersalna i może sortować dowolne typy danych, które posiadają zdefiniowany operator porównania (\texttt{<}).
+
+Diagram logiczny klasy przedstawia się następująco:
+
+\begin{itemize}
+    \item \textbf{Szablon:} \texttt{template <typename T>}
+    \item \textbf{Metoda publiczna (Interfejs):} 
+    \begin{itemize}
+        \item \texttt{static void sort(std::vector<T>\& arr)} – Przyjmuje wektor przez referencję, co zapobiega zbędnemu kopiowaniu danych i zwiększa wydajność. Sprawdza warunki brzegowe (np. pusta tablica) i uruchamia rekurencję.
+    \end{itemize}
+    \item \textbf{Metody prywatne (Logika wewnętrzna):}
+    \begin{itemize}
+        \item \texttt{mergeSort(arr, left, right)} – Odpowiada za rekurencyjny podział tablicy na połowy, aż do uzyskania tablic jednoelementowych.
+        \item \texttt{merge(arr, left, mid, right)} – Kluczowa metoda algorytmu. Odpowiada za scalanie dwóch posortowanych podtablic w jedną, wykorzystując pomocniczy wektor tymczasowy.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Analiza złożoności algorytmu}
+
+W fazie projektowania przeanalizowano wydajność algorytmu. Merge Sort jest algorytmem stabilnym, co oznacza, że nie zmienia kolejności elementów o tych samych wartościach klucza.
+
+\subsubsection{Złożoność czasowa}
+Algorytm działa w oparciu o rekurencję:
+\begin{enumerate}
+    \item Podział tablicy na połowy zajmuje czas stały $O(1)$.
+    \item Rekurencyjne sortowanie dwóch połówek o rozmiarze $n/2$ zajmuje $2T(n/2)$.
+    \item Scalanie (merge) tablicy o rozmiarze $n$ zajmuje czas liniowy $O(n)$.
+\end{enumerate}
+
+Całkowita złożoność czasowa dla wszystkich przypadków (optymistycznego, średniego i pesymistycznego) wynosi:
+\begin{equation}
+    T(n) = O(n \log n)
+\end{equation}
+Jest to znacząca przewaga nad prostymi algorytmami takimi jak Bubble Sort czy Insertion Sort, których złożoność wynosi $O(n^2)$.
+
+\subsubsection{Złożoność pamięciowa}
+Ze względu na konieczność użycia dodatkowej tablicy pomocniczej w procesie scalania (\texttt{std::vector<T> temp}), algorytm posiada złożoność pamięciową:
+\begin{equation}
+    S(n) = O(n)
+\end{equation}
+W projekcie wykorzystano kontenery \texttt{std::vector}, które zarządzają pamięcią na stercie (\textit{heap}), co pozwala na sortowanie dużych zbiorów danych bez ryzyka przepełnienia stosu.
+
+\subsection{Pseudokod algorytmu}
+
+Logiczną strukturę zaimplementowanego algorytmu (niezależną od języka programowania) zaprojektowano w następujący sposób:
+
+\begin{lstlisting}[caption=Pseudokod algorytmu Merge Sort, language=]
+Funkcja MergeSort(Tablica A, lewy, prawy):
+    Jezeli lewy >= prawy:
+        Wroc (Koniec rekurencji)
+    
+    srodek = lewy + (prawy - lewy) / 2
+    
+    MergeSort(A, lewy, srodek)
+    MergeSort(A, srodek + 1, prawy)
+    
+    Merge(A, lewy, srodek, prawy)
+
+Funkcja Merge(Tablica A, lewy, srodek, prawy):
+    Utworz tablice pomocnicza Temp
+    i = lewy, j = srodek + 1, k = 0
+    
+    Dopoki i <= srodek ORAZ j <= prawy:
+        Jezeli A[i] <= A[j]:
+            Temp[k++] = A[i++]
+        W przeciwnym razie:
+            Temp[k++] = A[j++]
+            
+    Przepisz pozostale elementy z lewej lub prawej czesci
+    Skopiuj Temp z powrotem do A
+\end{lstlisting}

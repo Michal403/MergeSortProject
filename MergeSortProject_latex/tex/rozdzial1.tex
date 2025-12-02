@@ -1,0 +1,45 @@
+\newpage
+\section{Ogólne określenie wymagań}
+
+Celem projektu jest implementacja oraz przetestowanie algorytmu sortowania przez scalanie (\textit{Merge Sort}) w języku C++. Kluczowym aspektem zadania jest wykorzystanie paradygmatu programowania uogólnionego (szablonów), co pozwoli na sortowanie różnych typów danych liczbowych. Projekt kładzie duży nacisk na weryfikację poprawności kodu poprzez testy jednostkowe oraz na wykorzystanie nowoczesnych narzędzi inżynierskich (Git, Doxygen).
+
+\subsection{Cel i zakres projektu}
+
+Głównym zadaniem jest stworzenie klasy szablonowej \texttt{MergeSort}, która będzie udostępniać statyczną metodę sortującą. Aplikacja musi zostać podzielona na dwa moduły w ramach jednego rozwiązania w Visual Studio:
+\begin{enumerate}
+    \item \textbf{Aplikacja główna:} Zawierająca funkcję \texttt{main} oraz demonstrację działania na tablicach typów \texttt{int} i \texttt{double}.
+    \item \textbf{Moduł testowy:} Zawierający zestaw testów jednostkowych opartych na frameworku Google Test.
+\end{enumerate}
+
+\subsection{Specyfikacja wymagań funkcjonalnych (Testy)}
+
+Zgodnie z poleceniem, algorytm musi zostać poddany rygorystycznym testom. Zaimplementowane testy jednostkowe muszą weryfikować następujące scenariusze:
+
+\begin{itemize}
+    \item \textbf{Sortowanie podstawowe:} Poprawne sortowanie losowej tablicy liczb.
+    \item \textbf{Optymalizacja:} Brak zmian w tablicy, gdy jest ona już posortowana rosnąco.
+    \item \textbf{Odwrotna kolejność:} Poprawne sortowanie tablicy posortowanej malejąco.
+    \item \textbf{Wartości ujemne:} Obsługa tablic z samymi liczbami ujemnymi oraz mieszanych (ujemne i dodatnie).
+    \item \textbf{Duplikaty:} Poprawne sortowanie tablic zawierających powtarzające się wartości (dla liczb dodatnich, ujemnych i mieszanych).
+    \item \textbf{Przypadki brzegowe:}
+    \begin{itemize}
+        \item Obsługa pustej tablicy (brak wyjątków).
+        \item Obsługa tablicy jednoelementowej (brak zmian).
+        \item Obsługa tablicy dwuelementowej.
+    \end{itemize}
+    \item \textbf{Wydajność/Skala:} Poprawne sortowanie dużych tablic (ponad 100 elementów), również w wariantach z liczbami ujemnymi i duplikatami.
+\end{itemize}
+
+\subsection{Wymagania pozafunkcjonalne i narzędziowe}
+
+Projekt musi spełniać standardy inżynierskie w zakresie wytwarzania oprogramowania:
+\begin{itemize}
+    \item \textbf{Środowisko:} Visual Studio (C++).
+    \item \textbf{Szablony:} Kod musi być uniwersalny (obsługa \texttt{int}, \texttt{double}, \texttt{float}, \texttt{long}).
+    \item \textbf{Kontrola wersji:} Kod musi być przechowywany w zdalnym repozytorium GitHub.
+    \item \textbf{Dokumentacja:}
+    \begin{itemize}
+        \item Dokumentacja techniczna wygenerowana automatycznie (Doxygen) do formatu PDF.
+        \item Dokumentacja projektowa (sprawozdanie) w systemie \LaTeX.
+    \end{itemize}
+\end{itemize}
